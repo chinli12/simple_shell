@@ -46,7 +46,7 @@ void process_command(char *command)
 	}
 	else if (strcmp(command, "env") == 0)
 	{
-		char **environ;
+		extern char **environ;
 
 		for (char **env = environ; *env != NULL; env++)
 			printf("%s\n", *env);

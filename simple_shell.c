@@ -33,7 +33,7 @@ int main(void)
 		display_prompt();
 	}
 
-	return 0;
+	return (0);
 }
 
 /**
@@ -111,7 +111,7 @@ void execute_command(char *command)
  */
 int is_exit_command(char *command)
 {
-	return strcmp(command, "exit") == 0;
+	return (strcmp(command, "exit") == 0);
 }
 
 /**

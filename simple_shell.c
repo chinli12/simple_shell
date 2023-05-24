@@ -2,48 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 1024
 #define MAX_ARGUMENTS 64
 
-/**
- * display_prompt - Display the shell prompt
- */
 void display_prompt(void);
-
-/**
- * read_command - Read the user's command from the standard input
- * @command: Buffer to store the command
- */
 void read_command(char *command);
-
-/**
- * execute_command - Execute the given command
- * @command: Command to be executed
- */
 void execute_command(char *command);
-
-/**
- * is_exit_command - Check if the command is the exit command
- * @command: Command to check
- * Return: 1 if the command is exit, 0 otherwise
- */
 int is_exit_command(char *command);
-
-/**
- * print_environment - Print the current environment variables
- */
 void print_environment(void);
 
-/**
- * main - Entry point of the shell program
- *
- * Return: 0 on success
- */
 int main(void)
 {
-	display_prompt();
 	char command[MAX_COMMAND_LENGTH];
+
+	display_prompt();
 
 	while (1)
 	{
@@ -59,11 +33,11 @@ int main(void)
 		display_prompt();
 	}
 
-	return (0);
+	return 0;
 }
 
 /**
- * display_prompt - Display the shell prompt
+ * display_prompt - Displays the shell prompt
  */
 void display_prompt(void)
 {
@@ -71,8 +45,8 @@ void display_prompt(void)
 }
 
 /**
- * read_command - Read the user's command from the standard input
- * @command: Buffer to store the command
+ * read_command - Reads a command from stdin
+ * @command: The buffer to store the command
  */
 void read_command(char *command)
 {
@@ -86,14 +60,16 @@ void read_command(char *command)
 }
 
 /**
- * execute_command - Execute the given command
- * @command: Command to be executed
+ * execute_command - Executes a command
+ * @command: The command to execute
  */
 void execute_command(char *command)
 {
 	char *arguments[MAX_ARGUMENTS];
 	char *token;
 	int arg_index = 0;
+	pid_t pid;
+	int status;
 
 	token = strtok(command, " ");
 	while (token != NULL && arg_index < MAX_ARGUMENTS - 1)
@@ -104,8 +80,7 @@ void execute_command(char *command)
 	}
 	arguments[arg_index] = NULL;
 
-	pid_t pid = fork();
-
+	pid = fork();
 	if (pid < 0)
 	{
 		perror("Fork failed");
@@ -121,8 +96,6 @@ void execute_command(char *command)
 	}
 	else
 	{
-		int status;
-
 		if (waitpid(pid, &status, 0) == -1)
 		{
 			perror("Waitpid failed");
@@ -132,20 +105,21 @@ void execute_command(char *command)
 }
 
 /**
- * is_exit_command - Check if the command is the exit command
- * @command: Command to check
- * Return: 1 if the command is exit, 0 otherwise
+ * is_exit_command - Checks if a command is the exit command
+ * @command: The command to check
+ * Return: 1 if it is the exit command, 0 otherwise
  */
 int is_exit_command(char *command)
 {
-	return (strcmp(command, "exit") == 0);
+	return strcmp(command, "exit") == 0;
 }
 
 /**
- * print_environment - Print the current environment variables
+ * print_environment - Prints the current environment variables
  */
 void print_environment(void)
 {
+	extern char **environ;
 	char **env = environ;
 
 	while (*env)

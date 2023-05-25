@@ -13,6 +13,9 @@ void execute_command(char *command);
 int is_exit_command(char *command);
 void print_environment(void);
 
+/**
+ * @main: the main application that runs
+ * */
 int main(void)
 {
 	char command[MAX_COMMAND_LENGTH];
@@ -119,7 +122,7 @@ int is_exit_command(char *command)
  */
 void print_environment(void)
 {
-	extern char **environ;
+	char **environ;
 	char **env = environ;
 
 	while (*env)

@@ -13,6 +13,9 @@ void execute_command(char *command);
 int is_exit_command(char *command);
 void print_environment(void);
 
+/**
+ * @main: the main application that runs
+ * */
 int main(void)
 {
 	char command[MAX_COMMAND_LENGTH];
@@ -33,7 +36,7 @@ int main(void)
 		display_prompt();
 	}
 
-	return 0;
+	return (0);
 }
 
 /**
@@ -111,7 +114,7 @@ void execute_command(char *command)
  */
 int is_exit_command(char *command)
 {
-	return strcmp(command, "exit") == 0;
+	return (strcmp(command, "exit") == 0);
 }
 
 /**
@@ -119,7 +122,7 @@ int is_exit_command(char *command)
  */
 void print_environment(void)
 {
-	extern char **environ;
+	char **environ;
 	char **env = environ;
 
 	while (*env)
